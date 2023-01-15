@@ -1,35 +1,43 @@
 import { parseCookies } from "nookies";
 import baseUrl from "../helpers/baseUrl";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import UserRoles from "../components/UserRoles";
 import Moment from "react-moment";
 
 const Account = ({ orders }) => {
   const orderCard = useRef(null);
   const cookie = parseCookies();
-  const user = cookie.user ? JSON.parse(cookie.user) : "";
-
+  const [user, setUser] = useState(cookie.user ? JSON.parse(cookie.user) : "");
+  // const user = cookie.user ? JSON.parse(cookie.user) : "";
   useEffect(() => {
     M.Collapsible.init(orderCard.current);
   }, []);
+
   const OrderHistory = () => {
     return (
       <ul className="collapsible" ref={orderCard}>
-        {orders.map((item) => {
+        {orders.map((item, index) => {
           return (
-            <li key={item.id}>
+            <li key={index}>
               <div className="collapsible-header">
                 <i className="material-icons">folder</i>
                 <Moment>{item.created_at}</Moment>
               </div>
               <div className="collapsible-body">
                 <h5>Total ₹ {item.total_price}</h5>
-                <ol type="disc">
-                  {item.items.map((pitem) => {
+                <ol
+                  type="disc"
+                  style={{
+                    display: "flex",
+
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {item.items.map((pitem, index) => {
                     return (
                       <>
-                        <li key={pitem.id}>
-                          <h5>{pitem?.productName}</h5>
+                        <li key={index} style={{ width: "170px" }}>
+                          <div className="heading">{pitem?.productName}</div>
                           <h6>Quantity = {pitem?.quantity} </h6>
                           <h6>Price = {pitem?.price}</h6>
                         </li>
@@ -48,18 +56,27 @@ const Account = ({ orders }) => {
   return (
     <div className="container">
       <div
-        className="center-align white-text"
+        className="center-align"
         style={{
           marginTop: "10px",
-          backgroundColor: "#1565c0",
+          border: "1px solid rgb(242, 242, 242)",
           padding: "3px",
+          color: "rgb(153, 153, 153)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          borderRadius: "5px",
         }}
       >
-        <h4>{user.name}</h4>
-        <h4>{user.email}</h4>
+        <div className="avtar__wrapper">
+          <img src="assets/img/avtar.png" style={{ width: "40px" }} />
+        </div>
+        <div className="heading">{user.name}</div>
+        <h6>{user.email}</h6>
       </div>
-      <h3>Order History</h3>
-      {orders.length == 0 ? (
+      <h5 style={{ margin: "20px 0px" }}>Order History</h5>
+      {orders?.length == 0 ? (
         <div className="container">
           <h5>Your have no order History</h5>
         </div>

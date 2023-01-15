@@ -8,11 +8,13 @@ import React from "react";
 import StripeCheckout from "react-stripe-checkout";
 
 const Cart = ({ error, products }) => {
-  const { user } = parseCookies();
   const router = useRouter();
   const [cProducts, setCartProduct] = useState(products.result);
-
-  useEffect(() => {}, [cProducts]);
+  const [user, setUser] = useState("");
+  useEffect(() => {
+    const { user } = parseCookies();
+    setUser(user);
+  }, []);
 
   let price = 0;
   if (!user) {
@@ -49,32 +51,85 @@ const Cart = ({ error, products }) => {
 
   const CartItems = () => {
     return (
-      <>
-        {console.log("Products", cProducts)}
-        {cProducts.map((item) => {
-          price = price + item.quantity * item.price;
+      <div className={`cart__container ${cProducts.length && "border"}`}>
+        <div className="heading">My Cart</div>
+        {cProducts.length > 0 ? (
+          cProducts?.map((item, index) => {
+            price = price + item.quantity * item.price;
 
-          return (
-            <div style={{ display: "flex", margin: "20px" }} key={item.id}>
-              <img src={item.mediaUrl} style={{ width: "30%" }} />
-              <div style={{ marginLeft: "20px" }}>
-                <h6>{item.name}</h6>
-                <h6>
-                  {item.quantity} x ₹ {item.price}
-                </h6>
-                <button
-                  className="btn red"
-                  onClick={() => {
-                    handleRemove(item.productId);
+            return (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  margin: "10px 0px",
+                }}
+                key={index}
+              >
+                <img
+                  src={item.mediaUrl}
+                  style={{ width: "100px", borderRadius: "4px" }}
+                  className="product__image"
+                />
+                <div
+                  style={{
+                    marginLeft: "20px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
                   }}
                 >
-                  remove
-                </button>
+                  <div
+                    className="heading"
+                    style={{ lineHeight: "5px", color: "" }}
+                  >
+                    {item?.name}
+                  </div>
+                  <h6 style={{ lineHeight: "5px" }}>
+                    {item?.quantity} x ₹ {item?.price}
+                  </h6>
+                  <button
+                    className="btn red"
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: "30px",
+                      marginTop: "5px",
+                    }}
+                    onClick={() => {
+                      handleRemove(item?.productId);
+                    }}
+                  >
+                    <i className="material-icons">delete</i>
+                  </button>
+                </div>
               </div>
+            );
+          })
+        ) : (
+          <div className="empty__cart__wrapper">
+            <img src="assets/img/cart.png" />
+            <div className="heading">You don't have any items in your cart</div>
+            <div className="para">
+              Your favourite items are just a click away
             </div>
-          );
-        })}
-      </>
+            <button
+              className="btn blue"
+              style={{ borderRadius: "5px" }}
+              onClick={() => {
+                router.push("/");
+              }}
+            >
+              Start Shopping
+            </button>
+          </div>
+        )}
+      </div>
     );
   };
 
@@ -92,24 +147,26 @@ const Cart = ({ error, products }) => {
     const res2 = await res.json();
     if (res2.statusCode == 200) {
       M.toast({ html: res2.result, classes: "green " });
-      router.push("/");
+      router.push("/account");
     }
   };
 
   const TotalPrice = () => {
     return (
       <div
-        className="container"
-        style={{ display: "flex", justifyContent: "space-between" }}
+        // className="container"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
       >
-        <h5>total ₹ {price}</h5>
-        {products.result.length != 0 && (
+        {cProducts?.length != 0 && <h5>Total ₹ {price}</h5>}
+        {cProducts?.length != 0 && (
           <StripeCheckout
             name="My store"
             amount={price * 100}
-            image={
-              products.result.length > 0 ? products.result[0].mediaUrl : ""
-            }
+            image={cProducts?.length > 0 ? cProducts[0]?.mediaUrl : ""}
             currency="INR"
             shippingAddress={true}
             billingAddress={true}
@@ -125,7 +182,7 @@ const Cart = ({ error, products }) => {
   };
 
   return (
-    <div className="container">
+    <div className="container__wrapper">
       <CartItems />
       <TotalPrice />
     </div>

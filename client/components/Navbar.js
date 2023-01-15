@@ -2,11 +2,16 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { parseCookies } from "nookies";
 import cookie from "js-cookie";
+import { useEffect, useState } from "react";
 const NavBar = () => {
   const router = useRouter();
-  const cookieuser = parseCookies();
-  let user = cookieuser.user ? JSON.parse(cookieuser.user) : "";
+  const [user, setUser] = useState("");
 
+  useEffect(() => {
+    const cookieuser = parseCookies();
+    let user = cookieuser.user ? JSON.parse(cookieuser.user) : "";
+    setUser(user);
+  }, [router.pathname]);
   function isActive(route) {
     if (route == router.pathname) {
       return "active";
@@ -33,7 +38,7 @@ const NavBar = () => {
             <Link href="/cart">cart</Link>
           </li>
 
-          {user.role == "ADMIN" || user.role == "ROOT" ? (
+          {user?.role == "ADMIN" || user?.role == "ROOT" ? (
             <li className={isActive("/create")}>
               <Link href="/create">create</Link>
             </li>
@@ -52,6 +57,7 @@ const NavBar = () => {
                   onClick={() => {
                     cookie.remove("token");
                     cookie.remove("user");
+                    setUser("");
                     router.push("/login");
                   }}
                 >

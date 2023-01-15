@@ -33,6 +33,7 @@ export class ProductsService {
 
   async findAll() {
     let data = await this.productRepository.findAll();
+
     return { errorCode: 0, errorMessage: 'Success', data: data };
   }
 

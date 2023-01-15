@@ -8,9 +8,12 @@ const Product = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const router = useRouter();
   const modalRef = useRef(null);
-  const cookie = parseCookies();
-  const user = cookie.user ? cookie.user : "";
+  const [user, setUser] = useState("");
+
   useEffect(() => {
+    const cookie = parseCookies();
+    const user = cookie.user ? cookie.user : "";
+    setUser(user);
     M.Modal.init(modalRef.current);
   }, []);
   if (router.isFallback) {
@@ -106,7 +109,7 @@ const Product = ({ product }) => {
           onClick={() => AddToCart()}
         >
           Add
-          <i className="material-icons right">add</i>
+          {/* <i className="material-icons right">add</i> */}
         </button>
       ) : (
         <button

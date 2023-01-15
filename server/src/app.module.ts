@@ -29,7 +29,7 @@ import { SucessOrder } from './sucess_orders/entities/sucess_order.entity';
       password: '12345678',
       database: 'next-nest',
       entities: [User, Product, CartItem, Orders, SucessOrder],
-      synchronize: true,
+      synchronize: false,
     }),
     UsersModule,
     ProductsModule,

@@ -45,7 +45,7 @@ function UserRoles() {
 
   return (
     <>
-      <h1>User roles</h1>
+      <h5 style={{ margin: "30px 0px" }}>User roles</h5>
       <table>
         <thead>
           <tr>
@@ -61,7 +61,19 @@ function UserRoles() {
                 <td>{item.name}</td>
                 <td>{item.email}</td>
                 <td onClick={() => handleRole(item.id, item.role)}>
-                  {item.role}
+                  <button
+                    title="Change role"
+                    style={{
+                      width: "100px",
+                      cursor: "pointer",
+                      borderRadius: "5px",
+                      border: "1px solid rgb(153, 153, 153)",
+                      background: "none",
+                      padding: "10px",
+                    }}
+                  >
+                    {item.role}
+                  </button>
                 </td>
               </tr>
             );

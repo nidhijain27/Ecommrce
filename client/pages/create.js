@@ -27,10 +27,10 @@ const Create = () => {
       if (res2.statusCode == 404) {
         M.toast({ html: res2.message, classes: "red" });
       } else {
-        setDescription("");
-        setMedia("");
-        setName("");
-        setPrice("");
+        // setDescription("");
+        // setMedia("");
+        // setName("");
+        // setPrice("");
         M.toast({ html: "Product saved", classes: "green" });
       }
     } catch (err) {
@@ -64,7 +64,7 @@ const Create = () => {
         }}
       />
       <input
-        type="text"
+        type="number"
         name="price"
         placeholder="Price"
         value={price}
