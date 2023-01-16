@@ -22,7 +22,7 @@ const Cart = ({ error, products }) => {
       <div className="center-align">
         <h3>Please login to view your cart</h3>
         <Link href="/login">
-          <button className="btn #1565c0 blue darken-3">Login</button>
+          <button className="btn  blue darken-3">Login</button>
         </Link>
       </div>
     );
@@ -45,7 +45,7 @@ const Cart = ({ error, products }) => {
       }),
     });
 
-    const res2 = await res.json();
+    const res2 = await res?.json();
     setCartProduct(res2.result);
   };
 
@@ -53,9 +53,9 @@ const Cart = ({ error, products }) => {
     return (
       <div className={`cart__container ${cProducts.length && "border"}`}>
         <div className="heading">My Cart</div>
-        {cProducts.length > 0 ? (
+        {cProducts?.length > 0 ? (
           cProducts?.map((item, index) => {
-            price = price + item.quantity * item.price;
+            price = price + item?.quantity * item?.price;
 
             return (
               <div
@@ -68,7 +68,7 @@ const Cart = ({ error, products }) => {
                 key={index}
               >
                 <img
-                  src={item.mediaUrl}
+                  src={item?.mediaUrl}
                   style={{ width: "100px", borderRadius: "4px" }}
                   className="product__image"
                 />
@@ -144,10 +144,10 @@ const Cart = ({ error, products }) => {
         paymentInfo,
       }),
     });
-    const res2 = await res.json();
-    if (res2.statusCode == 200) {
-      M.toast({ html: res2.result, classes: "green " });
-      router.push("/account");
+    const res2 = await res?.json();
+    if (res2?.statusCode == 200) {
+      M.toast({ html: res2?.result, classes: "green " });
+      router?.push("/account");
     }
   };
 
@@ -201,9 +201,9 @@ export async function getServerSideProps(ctx) {
       user: user,
     },
   });
-  const products = await res.json();
+  const products = await res?.json();
 
-  if (products.statusCode != 200) {
+  if (products?.statusCode != 200) {
     return {
       props: { error: "You Must Logged In" },
     };

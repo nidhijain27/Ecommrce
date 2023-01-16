@@ -14,7 +14,7 @@ const Account = ({ orders }) => {
   // const user = cookie.user ? JSON.parse(cookie.user) : "";
 
   useEffect(() => {
-    const user = cookie.user ? JSON.parse(cookie.user) : "";
+    const user = cookie?.user ? JSON.parse(cookie?.user) : "";
     setUser(user);
   }, []);
   useEffect(() => {
@@ -24,13 +24,13 @@ const Account = ({ orders }) => {
   const OrderHistory = () => {
     return (
       <ul className="collapsible" ref={orderCard}>
-        {orders.map((item, index) => {
+        {orders?.map((item, index) => {
           return (
             <li key={index}>
               <div className="collapsible-header">
                 <i className="material-icons">folder</i>
 
-                {moment(item.created_at).format("MMMM Do YYYY, h:mm:ss a")}
+                {moment(item?.created_at).format("MMMM Do YYYY, h:mm:ss a")}
               </div>
               <div className="collapsible-body">
                 <h5>Total ₹ {item?.total_price}</h5>
@@ -81,8 +81,8 @@ const Account = ({ orders }) => {
         <div className="avtar__wrapper">
           <img src="assets/img/avtar.png" style={{ width: "40px" }} />
         </div>
-        <div className="heading">{user.name}</div>
-        <h6>{user.email}</h6>
+        <div className="heading">{user?.name}</div>
+        <h6>{user?.email}</h6>
       </div>
       <h5 style={{ margin: "20px 0px" }}>Order History</h5>
       {orders?.length == 0 ? (
@@ -106,7 +106,7 @@ const Account = ({ orders }) => {
       ) : (
         <OrderHistory />
       )}
-      {user.role == "ROOT" && <UserRoles />}
+      {user?.role == "ROOT" && <UserRoles />}
     </div>
   );
 };
@@ -124,7 +124,7 @@ export async function getServerSideProps(ctx) {
       user: user,
     },
   });
-  const res2 = await res.json();
+  const res2 = await res?.json();
 
   return {
     props: { orders: res2 },
