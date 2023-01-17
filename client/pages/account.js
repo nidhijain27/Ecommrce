@@ -1,6 +1,6 @@
 import { parseCookies } from "nookies";
 import baseUrl from "../helpers/baseUrl";
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UserRoles from "../components/UserRoles";
 import { useRouter } from "next/router";
 
@@ -30,7 +30,7 @@ const Account = ({ orders }) => {
               <div className="collapsible-header">
                 <i className="material-icons">folder</i>
 
-                {moment(item?.created_at).format("MMMM Do YYYY, h:mm:ss a")}
+                {moment(item?.created_at).format("MMMM Do YYYY, h:mm a")}
               </div>
               <div className="collapsible-body">
                 <h5>Total ₹ {item?.total_price}</h5>
@@ -84,12 +84,14 @@ const Account = ({ orders }) => {
         <div className="heading">{user?.name}</div>
         <h6>{user?.email}</h6>
       </div>
-      <h5 style={{ margin: "20px 0px" }}>Order History</h5>
+      {orders?.length != 0 && (
+        <h5 style={{ margin: "20px 0px" }}>Order History</h5>
+      )}
       {orders?.length == 0 ? (
         // <div className="container">
         //   <h5>Your have no order History</h5>
         // </div>
-        <div className="empty__cart__wrapper">
+        <div className="empty__cart__wrapper" style={{ marginTop: "40px" }}>
           <img style={{ width: "100px" }} src="assets/img/dog.png" />
           <div className="heading">No Order History</div>
           <div className="para">Your favourite items are just a click away</div>
@@ -97,7 +99,7 @@ const Account = ({ orders }) => {
             className="btn blue"
             style={{ borderRadius: "5px" }}
             onClick={() => {
-              router.push("/");
+              router?.push("/");
             }}
           >
             Start Shopping

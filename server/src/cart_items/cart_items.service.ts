@@ -12,6 +12,7 @@ export class CartItemsService {
     private cartRepository: CartRepository,
 
     @InjectStripe() private readonly stripe: Stripe,
+
     private readonly ordersService: OrdersService,
   ) {}
 

@@ -46,10 +46,6 @@ export class ProductsService {
     return { errorCode: 0, errorMessage: 'Success', data: data };
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
-  }
-
   async remove(id: number) {
     let data = await this.productRepository.remove(id);
 

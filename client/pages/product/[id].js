@@ -3,6 +3,7 @@ import baseUrl from "../../helpers/baseUrl";
 import { useRef, useEffect, useState } from "react";
 import { parseCookies } from "nookies";
 import cookie2 from "js-cookie";
+import StarRatings from "react-star-ratings";
 
 const Product = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
@@ -91,37 +92,78 @@ const Product = ({ product }) => {
   };
 
   return (
-    <div className="container center-align">
-      <h3>{product?.name}</h3>
-      <img src={product?.mediaUrl} style={{ width: "30%" }} />
-      <h5>RS {product?.price}</h5>
-      <input
-        type="number"
-        style={{ width: "400px", margin: "10px" }}
-        min="1"
-        value={quantity}
-        onChange={(e) => setQuantity(Number(e.target.value))}
-        placeholder="Qunatity"
-      />
-      {user ? (
-        <button
-          className="btn waves-effect waves-light #1565c0 blue darken-3"
-          onClick={() => AddToCart()}
+    <div className="description__page container" style={{ paddingTop: "40px" }}>
+      <div style={{ width: "50%", paddingRight: "40px" }}>
+        <div
+          style={{ padding: "10px", border: "1px solid rgb(242, 242, 242)" }}
         >
-          Add
-          {/* <i className="material-icons right">add</i> */}
-        </button>
-      ) : (
-        <button
-          className="btn waves-effect waves-light #1565c0 blue darken-3"
-          onClick={() => router.push("/login")}
-        >
-          Login To Add
-          <i className="material-icons right">add</i>
-        </button>
-      )}
+          <img
+            src={product?.mediaUrl}
+            style={{ width: "100%", borderRadius: "5px" }}
+          />
+        </div>
+      </div>
+      <div style={{ width: "50%" }}>
+        <h3>{product?.name}</h3>
 
-      <p className="left-align">{product?.description}</p>
+        <h5>₹ {product?.price}</h5>
+        <div className="description__page ">
+          <div>
+            <StarRatings
+              rating={4.5}
+              starDimension="20px"
+              starSpacing="2px"
+              starRatedColor="#FDCC0D"
+            />
+          </div>
+
+          <div
+            style={{
+              marginLeft: "10px",
+              cursor: "pointer",
+              color: "#DBDBDB",
+              fontWeight: "600",
+            }}
+          >
+            827 ratings
+          </div>
+        </div>
+
+        <div className="description">
+          <div style={{ marginRight: "20px" }}>
+            <input
+              type="number"
+              style={{ marginRight: "40px" }}
+              min={1}
+              value={(quantity || 1).toString()}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+              placeholder="Qunatity"
+            />
+          </div>
+          <div>
+            {user ? (
+              <button
+                className="btn waves-effect waves-light  blue darken-3"
+                marginLeft="10px"
+                onClick={() => AddToCart()}
+              >
+                Add
+              </button>
+            ) : (
+              <button
+                style={{ width: "150px" }}
+                className="btn waves-effect waves-light  blue darken-3"
+                onClick={() => router.push("/login")}
+              >
+                Login To Add
+                <i className="material-icons right">add</i>
+              </button>
+            )}
+          </div>
+        </div>
+
+        <p className="left-align">{product?.description}</p>
+      </div>
 
       {/* {user.role != "CONSUMER" && (
         <button
